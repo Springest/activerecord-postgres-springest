@@ -24,7 +24,7 @@ class Inet
   end
 
   # If the method from_postgres_array is called in an Array, it just returns self.
-  def from_postgres_array(base_type = :string)
+  def from_postgres_init(base_type = :string)
     self
   end
 end

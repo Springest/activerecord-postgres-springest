@@ -109,34 +109,69 @@ module ActiveRecord
     end
 
     class PostgreSQLColumn < Column
-      # Does the type casting from array columns using String#from_postgres_array or Array#from_postgres_array.
-      def type_cast_code_with_array(var_name)
-        if type.to_s =~ /_array$/
-          base_type = type.to_s.gsub(/_array/, '')
-          "#{var_name}.from_postgres_array(:#{base_type.parameterize('_')})"
-        else
-          type_cast_code_without_array(var_name)
+      module Cast
+        def string_to_cidr(string)
+          if string.nil?
+            nil
+          elsif String === string
+            begin
+              IPAddr.new(string)
+            rescue ArgumentError
+              nil
+            end
+          else
+            string
+          end
+        end
+
+        def cidr_to_string(object)
+          if IPAddr === object
+            "#{object.to_s}/#{object.instance_variable_get(:@mask_addr).to_s(2).count('1')}"
+          else
+            object
+          end
         end
       end
-      alias_method_chain :type_cast_code, :array
+
+      # Does the type casting from array columns using String#from_postgres_array or Array#from_postgres_array.
+      def type_cast_code_with_patch(var_name)
+        klass = self.class.name
+        case type
+          when /array$/
+            base_type = type.to_s.gsub(/_array/, '')
+            "#{var_name}.from_postgres_array(:#{base_type.parameterize('_')})"
+          when :inet, :cidr
+             "#{klass}.string_to_cidr(#{var_name})"
+          else
+            type_cast_code_without_patch(var_name)
+        end
+      end
+      alias_method_chain :type_cast_code, :patch
 
       # Adds the array type for the column.
-      def simplified_type_with_array(field_type)
-        if field_type =~ /^numeric.+\[\]$/
-          :decimal_array
-        elsif field_type =~ /character varying.*\[\]/
-          :string_array
-        elsif field_type =~ /^(?:real|double precision)\[\]$/
-          :float_array
-        elsif field_type =~ /timestamp.*\[\]/
-          :timestamp_array
-        elsif field_type =~ /\[\]$/
-          field_type.gsub(/\[\]/, '_array').to_sym
-        else
-          simplified_type_without_array(field_type)
+      def simplified_type_with_patch(field_type)
+        case field_type
+          when 'inet'
+            :inet
+          when 'cidr'
+            :cidr
+          when 'macaddr'
+            :macaddr
+          when /^numeric.+\[\]$/
+            :decimal_array
+          when /character varying.*\[\]/
+            :string_array
+          when /^(?:real|double precision)\[\]$/
+            :float_array
+          when /timestamp.*\[\]/
+            :timestamp_array
+          when /\[\]$/
+            field_type.gsub(/\[\]/, '_array').to_sym
+          else
+            simplified_type_without_patch(field_type)
         end
       end
-      alias_method_chain :simplified_type, :array
+      alias_method_chain :simplified_type, :patch
     end
   end
 end

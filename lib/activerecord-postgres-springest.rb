@@ -15,5 +15,3 @@ end
 
 require "activerecord-postgres-springest/string"
 require "activerecord-postgres-springest/array"
-require "activerecord-postgres-springest/inet"
-require "activerecord-postgres-springest/cidn"

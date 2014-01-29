@@ -13,11 +13,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = s.description
 
-  s.add_dependency "activerecord"
+  s.add_dependency "activerecord", '~> 3.2'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 2.12.0'
   s.add_development_dependency 'pg'
   s.add_development_dependency 'activerecord-postgres-hstore'
-  s.add_development_dependency 'combustion', '~> 0.3.1'
-  s.add_development_dependency 'geminabox'
+  s.add_development_dependency 'combustion', '0.5.1'
+
 end

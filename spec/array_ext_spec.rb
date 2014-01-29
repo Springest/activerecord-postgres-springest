@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'activerecord-postgres-array/array'
+require 'activerecord-postgres-springest/array'
 
 describe "Array" do
   describe "#to_postgres_array" do

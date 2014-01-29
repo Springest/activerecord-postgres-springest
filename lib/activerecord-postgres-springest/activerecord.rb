@@ -64,6 +64,18 @@ module ActiveRecord
           column_names.each { |name| column(name, "#{base_type}[]", options) }
         end
       end
+
+      def inet(name, options = {})
+        column(name, 'inet', options)
+      end
+
+      def cidr(name, options = {})
+        column(name, 'cidr', options)
+      end
+
+      def macaddr(name, options = {})
+        column(name, 'macaddr', options)
+      end
     end
 
     class TableDefinition
@@ -81,6 +93,18 @@ module ActiveRecord
           column_names = args
           column_names.each { |name| column(name, "#{base_type}[]", options) }
         end
+      end
+
+      def inet(name, options = {})
+        column(name, 'inet', options)
+      end
+
+      def cidr(name, options = {})
+        column(name, 'cidr', options)
+      end
+
+      def macaddr(name, options = {})
+        column(name, 'macaddr', options)
       end
     end
 

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'activerecord-postgres-array/string'
+require 'activerecord-postgres-springest/string'
 
 describe "String" do
   describe "#valid_postgres_array?" do

@@ -30,12 +30,20 @@ module ActiveRecord
 
   module ConnectionAdapters
     class PostgreSQLAdapter < AbstractAdapter
-      POSTGRES_ARRAY_TYPES = %w( string text integer float decimal datetime timestamp time date binary boolean )
+      POSTGRES_ARRAY_TYPES = %w( string text integer float decimal datetime timestamp time date binary boolean inet macaddr cidr )
 
-      def native_database_types_with_array(*args)
-        native_database_types_without_array.merge(POSTGRES_ARRAY_TYPES.inject(Hash.new) {|h, t| h.update("#{t}_array".to_sym => {:name => "#{native_database_types_without_array[t.to_sym][:name]}[]"})})
+      def native_database_types_with_patch(*args)
+        native_database_types_without_patch.merge!(
+          {
+          inet:        { name: "inet" },
+          cidr:        { name: "cidr" },
+          macaddr:     { name: "macaddr" },
+          }
+        )
+        puts native_database_types_without_patch
+        native_database_types_without_patch.merge(POSTGRES_ARRAY_TYPES.inject(Hash.new) {|h, t| h.update("#{t}".to_sym => {:name => "#{native_database_types_without_patch[t.gsub("_array", "").to_sym][:name]}[]"})})
       end
-      alias_method_chain :native_database_types, :array
+      alias_method_chain :native_database_types, :patch
 
       # Quotes a value for use in an SQL statement
       def quote_with_array(value, column = nil)

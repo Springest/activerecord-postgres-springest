@@ -40,8 +40,7 @@ module ActiveRecord
           macaddr:     { name: "macaddr" },
           }
         )
-        puts native_database_types_without_patch
-        native_database_types_without_patch.merge(POSTGRES_ARRAY_TYPES.inject(Hash.new) {|h, t| h.update("#{t}".to_sym => {:name => "#{native_database_types_without_patch[t.gsub("_array", "").to_sym][:name]}[]"})})
+        native_database_types_without_patch.merge(POSTGRES_ARRAY_TYPES.inject(Hash.new) {|h, t| h.update("#{t}_array".to_sym => {:name => "#{native_database_types_without_patch[t.gsub("_array", "").to_sym][:name]}[]"})})
       end
       alias_method_chain :native_database_types, :patch
 

@@ -116,7 +116,7 @@ module ActiveRecord
     end
 
     class PostgreSQLColumn < Column
-      def string_to_cidr(string)
+      def self.string_to_cidr(string)
         if string.nil?
           nil
         elsif String === string
@@ -130,7 +130,7 @@ module ActiveRecord
         end
       end
 
-      def cidr_to_string(object)
+      def self.cidr_to_string(object)
         if IPAddr === object
           "#{object.to_s}/#{object.instance_variable_get(:@mask_addr).to_s(2).count('1')}"
         else

@@ -131,7 +131,9 @@ module ActiveRecord
       end
 
       def self.cidr_to_string(object)
-        if IPAddr === object
+        if object.blank?
+          nil
+        elsif IPAddr === object
           "#{object.to_s}/#{object.instance_variable_get(:@mask_addr).to_s(2).count('1')}"
         else
           object
@@ -146,7 +148,7 @@ module ActiveRecord
             base_type = type.to_s.gsub(/_array/, '')
             "#{var_name}.from_postgres_array(:#{base_type.parameterize('_')})"
           when :inet, :cidr
-             "#{klass}.string_to_cidr(#{var_name})"
+             "#{klass}.cidr_to_string(#{var_name})"
           else
             type_cast_code_without_patch(var_name)
         end
@@ -155,14 +157,14 @@ module ActiveRecord
 
       # Used for defaults
       def type_cast_with_patch(value)
-        klass = self.class.name
+        klass = self.class
 
         if value.present? && type.to_s =~ /_array$/
           base_type = type.to_s.gsub(/_array/, '')
           value.from_postgres_array(base_type.parameterize('_').to_sym)
 
         elsif value.present? && type.to_s =~ /(inet|cidr)/
-          klass.cidr_to_string(value)
+          klass.string_to_cidr(value)
         else
           type_cast_without_patch(value)
         end

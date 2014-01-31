@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Article do
   describe ".create" do
     it "builds valid arrays" do
-      article = Article.create(:languages => ["English", "German"], :author_ids => [1,2,3])
+      article = Article.create(:languages => ["English", "German"], :author_ids => [1,2,3], ip: '192.168.0.100')
       article.reload
       article.languages_before_type_cast.should == "{English,German}"
       article.languages.should == ["English", "German"]
@@ -12,7 +12,7 @@ describe Article do
     end
 
     it "escapes single quotes correctly" do
-      article = Article.create(:languages => ["English", "Ger'man"])
+      article = Article.create(:languages => ["English", "Ger'man"], ip: '')
       article.reload
       article.languages_before_type_cast.should == "{English,Ger''man}"
       article.languages.should == ["English", "Ger'man"]

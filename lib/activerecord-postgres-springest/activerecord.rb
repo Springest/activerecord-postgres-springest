@@ -116,27 +116,25 @@ module ActiveRecord
     end
 
     class PostgreSQLColumn < Column
-      module Cast
-        def string_to_cidr(string)
-          if string.nil?
+      def string_to_cidr(string)
+        if string.nil?
+          nil
+        elsif String === string
+          begin
+            IPAddr.new(string)
+          rescue ArgumentError
             nil
-          elsif String === string
-            begin
-              IPAddr.new(string)
-            rescue ArgumentError
-              nil
-            end
-          else
-            string
           end
+        else
+          string
         end
+      end
 
-        def cidr_to_string(object)
-          if IPAddr === object
-            "#{object.to_s}/#{object.instance_variable_get(:@mask_addr).to_s(2).count('1')}"
-          else
-            object
-          end
+      def cidr_to_string(object)
+        if IPAddr === object
+          "#{object.to_s}/#{object.instance_variable_get(:@mask_addr).to_s(2).count('1')}"
+        else
+          object
         end
       end
 

@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name = "activerecord-postgres-springest"
-  s.version = "0.0.9.tinfoil.1"
+  s.version = "0.0.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Tim Connor"]
-  s.date = %q{2012-02-08}
-  s.description = "Adds support for postgres arrays to ActiveRecord"
+  s.authors = ["Tim Connor", "Peter de Ruijter"]
+  s.date = %q{2014-01-31}
+  s.description = "Adds support for postgres arrays and networktypes to ActiveRecord"
   s.email = "tlconnor@gmail.com"
-  s.homepage = "https://github.com/tlconnor/activerecord-postgres-springest"
+  s.homepage = "https://github.com/Springest/activerecord-postgres-springest"
   s.files = ["Gemfile", "LICENSE", "Rakefile", "README.textile", "activerecord-postgres-springest.gemspec"] + Dir['**/*.rb']
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}

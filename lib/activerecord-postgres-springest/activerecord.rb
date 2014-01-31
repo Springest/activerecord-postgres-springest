@@ -155,9 +155,14 @@ module ActiveRecord
 
       # Used for defaults
       def type_cast_with_patch(value)
+        klass = self.class.name
+
         if value.present? && type.to_s =~ /_array$/
           base_type = type.to_s.gsub(/_array/, '')
           value.from_postgres_array(base_type.parameterize('_').to_sym)
+
+        elsif value.present? && type.to_s =~ /(inet|cidr)/
+          klass.cidr_to_string(value)
         else
           type_cast_without_patch(value)
         end

@@ -117,7 +117,7 @@ module ActiveRecord
 
     class PostgreSQLColumn < Column
       def self.string_to_cidr(string)
-        if string.nil?
+        if string.blank?
           nil
         elsif String === string
           begin

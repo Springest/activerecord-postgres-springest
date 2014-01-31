@@ -2,3 +2,7 @@ test:
   adapter: postgresql
   encoding: unicode
   database: apa_test
+  username: springest
+  password: ''
+  port: 5432
+  host: localhost

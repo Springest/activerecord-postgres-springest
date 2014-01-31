@@ -153,6 +153,17 @@ module ActiveRecord
       end
       alias_method_chain :type_cast_code, :patch
 
+      # Used for defaults
+      def type_cast_with_patch(value)
+        if value.present? && type.to_s =~ /_array$/
+          base_type = type.to_s.gsub(/_array/, '')
+          value.from_postgres_array(base_type.parameterize('_').to_sym)
+        else
+          type_cast_without_patch(value)
+        end
+      end
+      alias_method_chain :type_cast, :patch
+
       # Adds the array type for the column.
       def simplified_type_with_patch(field_type)
         case field_type

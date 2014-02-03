@@ -11,6 +11,7 @@ describe "Schema" do
 
   it "should dump the schema including inet type" do
     dump_stream.string.should include("t.inet")
+    dump_stream.string.should include(':default => "0.0.0.0"')
   end
 
   it "should dump the schema including the array types" do

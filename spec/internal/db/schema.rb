@@ -6,7 +6,7 @@ ActiveRecord::Schema.define do
     t.string_array  :languages
     t.integer_array :author_ids
     t.float_array   :prices
-    t.inet          :ip
+    t.inet          :ip, default: '0.0.0.0'
     t.string_array  :defaults, default: ['foo', 'bar']
 
     # To make sure we don't interfere with YAML serialization

@@ -119,12 +119,6 @@ module ActiveRecord
       def self.string_to_cidr(string)
         if string.blank?
           nil
-        elsif String === string
-          begin
-            IPAddr.new(string)
-          rescue ArgumentError
-            nil
-          end
         else
           string
         end

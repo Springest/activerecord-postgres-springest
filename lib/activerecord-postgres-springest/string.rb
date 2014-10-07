@@ -20,9 +20,9 @@ class String
     if empty?
       []
     else
-      elements = match(/\{(.*)\}/m).captures.first.gsub(/\\"/, '$ESCAPED_DOUBLE_QUOTE$').split(/(?:,)(?=(?:[^"]|"[^"]*")*$)/m)
+      elements = match(/\{(.*)\}/m).captures.first.gsub(/\\"/, '$ESCAPED_DOUBLE_QUOTE$').gsub(/\n/, '$NEWLINE$').split(/(?:,)(?=(?:[^"]|"[^"]*")*$)/m)
       elements = elements.map do |e|
-        res = e.gsub('$ESCAPED_DOUBLE_QUOTE$', '"').gsub("\\\\", "\\").gsub(/^"/, '').gsub(/"$/, '').gsub("''", "'").strip
+        res = e.gsub('$ESCAPED_DOUBLE_QUOTE$', '"').gsub('$NEWLINE$', "\n").gsub("\\\\", "\\").gsub(/^"/, '').gsub(/"$/, '').gsub("''", "'").strip
         res == 'NULL' ? nil : res
       end
 

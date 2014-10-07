@@ -90,6 +90,10 @@ describe "String" do
       '{Ruby,on,"Rails,"}'.from_postgres_array.should == ["Ruby", "on", "Rails,"]
     end
 
+    it 'correctly handles commas and newlines' do
+      "{\"one, \n two\"}".from_postgres_array.should == ["one, \n two"]
+    end
+
     it 'correctly handles single quotes' do
       "{Ruby,on,Ra'ils}".from_postgres_array.should == ["Ruby", "on", "Ra'ils"]
     end

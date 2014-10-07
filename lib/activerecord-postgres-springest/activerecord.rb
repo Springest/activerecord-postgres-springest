@@ -1,4 +1,5 @@
 require 'active_record/connection_adapters/postgresql_adapter'
+require 'ipaddr'
 
 module ActiveRecord
   class ArrayTypeMismatch < ActiveRecord::ActiveRecordError

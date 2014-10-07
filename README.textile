@@ -42,3 +42,9 @@ h3. Future enhancements
 
 * Arel like querying of values within arrays
 * Arel like aggregate functions
+
+h2. Running the testsuite
+
+To run the testsuite, edit `spec/internal/config/database.yml` to point to your DB
+
+Then run `bundle exec rspec`.
